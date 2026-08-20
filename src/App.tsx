@@ -1,5 +1,6 @@
 import Movimientos from "./components/Movimientos";
 import Resumen from "./components/Resumen";
+import Formulario from "./components/FormularioMovimientos";
 
 function App() {
   const movimientos = [
@@ -39,7 +40,9 @@ function App() {
           <li> 👤Licenia</li>
         </ul>
       </nav>
-
+      <section>
+        <Formulario agregarMovimiento={agregarMovimiento}/>
+      </section>
       <section className="container">
         <div>
           <ul className="list">
@@ -68,6 +71,10 @@ function App() {
       </section>
     </>
   );
+}
+
+function agregarMovimiento(movimiento) {
+  console.log(movimiento)
 }
 
 export default App;
