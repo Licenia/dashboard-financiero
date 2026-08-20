@@ -1,9 +1,9 @@
-type ResumenProps = {
+type MovimientosProps = {
   monto: number;
   descripcion: string;
 };
 
-function Movimientos(props: ResumenProps) {
+function Movimientos(props: MovimientosProps) {
   return (
     <div>
       <ul className="list">
