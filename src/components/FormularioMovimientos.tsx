@@ -12,8 +12,8 @@ function Formulario(props) {
       monto,
       tipo
     }
-
-    agregarMovimiento(obj)
+// Se envía el objeto con los datos del formulario al componente padre
+    props.agregarMovimiento(obj)
   }
   return (
   <form onSubmit={manejarEnvio}>
