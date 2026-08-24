@@ -1,35 +1,43 @@
 import Movimientos from "./components/Movimientos";
 import Resumen from "./components/Resumen";
 import Formulario from "./components/FormularioMovimientos";
+import { useState } from "react";
+
 
 function App() {
-  const movimientos = [
-    {
-      id: 1,
-      monto: 800,
-      descripcion: "Transferencia",
-      tipo: "ingreso",
-    },
-    {
-      id: 2,
-      monto: 500,
-      descripcion: "Comida",
-      tipo: "gasto",
-    },
-    {
-      id: 3,
-      monto: 80,
-      descripcion: "Transporte",
-      tipo: "gasto",
-    },
-  ];
-
+// estado inicial de movimientos
+  const [movimientos, setMovimientos] = useState([{
+    id: 1,
+    monto: 800,
+    descripcion: "Transferencia",
+    tipo: "ingreso",
+  },
+  {
+    id: 2,
+    monto: 500,
+    descripcion: "Comida",
+    tipo: "gasto",
+  },
+  {
+    id: 3,
+    monto: 80,
+    descripcion: "Transporte",
+    tipo: "gasto",
+    }])
+// agrega un nuevo movimiento al estado
+  function agregarMovimiento(movimientos) {
+    setMovimientos((estadoAnterior) => [
+      ...estadoAnterior,
+      movimientos
+    ])
+  }
+// filtra  y suma los montos de gastos e ingresos
   const gastos = movimientos
-    .filter((movimiento) => movimiento.tipo === "gasto")
+    .filter((mov) => mov.tipo === "gasto")
     .reduce((acumulador, gasto) => acumulador + gasto.monto, 0);
 
   const ingresos = movimientos
-    .filter((movimientos) => movimientos.tipo === "ingreso")
+    .filter((mov) => mov.tipo === "ingreso")
     .reduce((acumulador, ingreso) => acumulador + ingreso.monto, 0);
 
   return (
@@ -73,8 +81,6 @@ function App() {
   );
 }
 
-function agregarMovimiento(movimiento) {
-  console.log(movimiento)
-}
+
 
 export default App;
