@@ -2,36 +2,36 @@ import Movimientos from "./components/Movimientos";
 import Resumen from "./components/Resumen";
 import Formulario from "./components/FormularioMovimientos";
 import { useState } from "react";
-
+import type { Movimiento } from "./types/movimientos";
 
 function App() {
-// estado inicial de movimientos
-  const [movimientos, setMovimientos] = useState([{
-    id: 1,
-    monto: 800,
-    descripcion: "Transferencia",
-    tipo: "ingreso",
-  },
-  {
-    id: 2,
-    monto: 500,
-    descripcion: "Comida",
-    tipo: "gasto",
-  },
-  {
-    id: 3,
-    monto: 80,
-    descripcion: "Transporte",
-    tipo: "gasto",
-    }])
-// agrega un nuevo movimiento al estado
-  function agregarMovimiento(movimientos) {
-    setMovimientos((estadoAnterior) => [
-      ...estadoAnterior,
-      movimientos
-    ])
+  // estado inicial de movimientos
+  const [movimientos, setMovimientos] = useState<Movimiento[]>([
+    {
+      id: 1,
+      monto: 800,
+      descripcion: "Transferencia",
+      tipo: "ingreso",
+    },
+    {
+      id: 2,
+      monto: 500,
+      descripcion: "Comida",
+      tipo: "gasto",
+    },
+    {
+      id: 3,
+      monto: 80,
+      descripcion: "Transporte",
+      tipo: "gasto",
+    },
+  ]);
+
+  // agrega un nuevo movimiento al estado
+  function agregarMovimiento(movimiento: Movimiento) {
+    setMovimientos((estadoAnterior) => [...estadoAnterior, movimiento]);
   }
-// filtra  y suma los montos de gastos e ingresos
+  // filtra  y suma los montos de gastos e ingresos
   const gastos = movimientos
     .filter((mov) => mov.tipo === "gasto")
     .reduce((acumulador, gasto) => acumulador + gasto.monto, 0);
@@ -43,13 +43,13 @@ function App() {
   return (
     <>
       <nav className="nav-options">
-        <h1>Banco Digital</h1>
+        <h1>Finanzas Personales</h1>
         <ul className="list">
           <li> 👤Licenia</li>
         </ul>
       </nav>
       <section>
-        <Formulario agregarMovimiento={agregarMovimiento}/>
+        <Formulario agregarMovimiento={agregarMovimiento} />
       </section>
       <section className="container">
         <div>
@@ -80,7 +80,5 @@ function App() {
     </>
   );
 }
-
-
 
 export default App;
