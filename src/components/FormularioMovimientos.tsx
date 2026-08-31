@@ -9,15 +9,33 @@ function Formulario({
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [tipo, setTipo] = useState<"ingreso" | "gasto">("ingreso");
+  const [error, setError] = useState("");
 
   const manejarEnvio = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
+
+      // Validaciones para todos los tipos de datos 
+
+      const montoNumerico = parseFloat(monto)
+      const cadenaLimpia = descripcion.trim()
+
+      if (cadenaLimpia === ""){
+        setError("No ingreso la descripcion")
+        return
+      }
+      
+      if (isNaN(montoNumerico)  || montoNumerico <= 0  ){
+        setError("EL monto debe ser un numero mayor que 0")
+        return
+      }
+
     const obj = {
       id: Date.now(),
-      descripcion,
-      monto: parseFloat(monto),
-      tipo,
+      descripcion: cadenaLimpia,
+      monto: montoNumerico,
+      tipo,      
     };
+
 
     // Se envía el objeto con los datos del formulario al componente padre
     agregarMovimiento(obj);
@@ -25,10 +43,13 @@ function Formulario({
     // Limpia los inputs
     setDescripcion("");
     setMonto("");
+    setError("")
   };
+
   return (
     <form onSubmit={manejarEnvio}>
       <h2>Nuevo Movimientos</h2>
+      { error !== "" && ( <p>{error}</p>) }
       <label>Descripcion </label>
       <input
         value={descripcion}
