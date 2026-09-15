@@ -5,6 +5,8 @@ import { useState } from "react";
 import type { Movimiento } from "./types/movimientos";
 
 function App() {
+  const [editedId, setEditedId] = useState<number | null > (null)
+  const [editedData, setEditedData] = useState<Movimiento | null > (null)
   // estado inicial de movimientos
   const [movimientos, setMovimientos] = useState<Movimiento[]>([
     {
@@ -46,6 +48,19 @@ function App() {
     setMovimientos(newRegister)
   }
 
+  // funcion para editar los movimientos
+  const editRegister = (id: number) => { setEditedId(id) }
+
+  const cancelEdit = () => { setEditedId(null) }
+
+  const handleChange = (campo: string, valor: string | number) => {
+    if (editedData) {
+      setEditedData({...editedData, [campo]: valor })
+    }
+  }
+  const updateRegister = () => {}
+
+
   return (
     <>
       <nav className="nav-options">
@@ -80,6 +95,9 @@ function App() {
               id={movimiento.id}
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
+              tipo={movimiento.tipo}
+              onEdit={editRegister}
+              onCancel={cancelEdit}
               onDelete={deleteRegister}
             />
           ))}
