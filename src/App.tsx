@@ -40,6 +40,12 @@ function App() {
     .filter((mov) => mov.tipo === "ingreso")
     .reduce((acumulador, ingreso) => acumulador + ingreso.monto, 0);
 
+  // Funcion para eliminar movimientos registrados
+  const deleteRegister = (id: number) => {
+    const newRegister = movimientos.filter((mov) => mov.id !== id)
+    setMovimientos(newRegister)
+  }
+
   return (
     <>
       <nav className="nav-options">
@@ -71,8 +77,10 @@ function App() {
           {movimientos.map((movimiento) => (
             <Movimientos
               key={movimiento.id}
+              id={movimiento.id}
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
+              onDelete={deleteRegister}
             />
           ))}
         </div>
