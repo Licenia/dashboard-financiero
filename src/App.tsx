@@ -1,4 +1,4 @@
-import Movimientos from "./components/Movimientos";
+import Movimientos, { type MovimientosProps } from "./components/Movimientos";
 import Resumen from "./components/Resumen";
 import Formulario from "./components/FormularioMovimientos";
 import { useState } from "react";
@@ -42,9 +42,21 @@ function App() {
 
   // Funcion para eliminar movimientos registrados
   const deleteRegister = (id: number) => {
-    const newRegister = movimientos.filter((mov) => mov.id !== id)
-    setMovimientos(newRegister)
-  }
+    const newRegister = movimientos.filter((mov) => mov.id !== id);
+    setMovimientos(newRegister);
+  };
+
+  // Funcion para editar los movimientos registrados
+  const editRegister = (id: number, nuevosDatos: Omit<Movimiento, "id">) => {
+    const editMov = movimientos.map((mov) => {
+      if (mov.id == id) {
+        const nuevo = { ...mov, ...nuevosDatos };
+        return nuevo;
+      }
+      return mov;
+    });
+    setMovimientos(editMov);
+  };
 
   return (
     <>
@@ -80,7 +92,9 @@ function App() {
               id={movimiento.id}
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
+              tipo={movimiento.tipo}
               onDelete={deleteRegister}
+              onEdit={editRegister}
             />
           ))}
         </div>
