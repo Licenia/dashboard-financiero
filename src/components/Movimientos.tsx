@@ -5,21 +5,32 @@ export type MovimientosProps = {
   id: number;
   monto: number;
   descripcion: string;
-  tipo: "ingreso" | "gasto";
+  tipo: "Ingreso" | "Gasto";
+  fecha: string;
   onDelete: (id: number) => void;
   onEdit: (id: number, nuevosDatos: Omit<Movimiento, "id">) => void;
 };
+
+
+function formatearFecha(fecha: string): string {
+  if (!fecha) return "";
+
+  const [anio, mes, dia] = fecha.split("-");
+  return `${dia}/${mes}/${anio}`;
+}
+
 
 function Movimientos(props: MovimientosProps) {
   const [editando, setEditando] = useState(false);
   const [descripcionEditar, setDescripcionEditar] = useState(props.descripcion);
   const [montoEditar, setMontoEditar] = useState(props.monto);
   const [tipoEditar, setTipoEditar] = useState(props.tipo);
+  const [fechaEditar, setFechaEditar] = useState(props.fecha);
   return (
     <div>
       <ul className="list">
         <li>
-          {props.monto} {props.descripcion} {props.tipo}
+          {props.monto} {props.descripcion} {formatearFecha(props.fecha)} {props.tipo}
           <img
             className="btn-delete"
             width="20"
@@ -45,12 +56,13 @@ function Movimientos(props: MovimientosProps) {
               <select
                 value={tipoEditar}
                 onChange={(e) =>
-                  setTipoEditar(e.target.value as "ingreso" | "gasto")
+                  setTipoEditar(e.target.value as "Ingreso" | "Gasto")
                 }
               >
                 <option value="ingreso">Ingreso</option>
                 <option value="gasto">Gasto</option>
               </select>
+              <input type="date" value={fechaEditar} onChange={(e)=> setFechaEditar(e.target.value)}/>
 
               <button
                 onClick={() => {
@@ -58,6 +70,7 @@ function Movimientos(props: MovimientosProps) {
                     descripcion: descripcionEditar,
                     monto: montoEditar,
                     tipo: tipoEditar,
+                    fecha: fechaEditar
                   });
                   setEditando(false);
                 }}

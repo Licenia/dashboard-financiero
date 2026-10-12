@@ -3,5 +3,6 @@ export type Movimiento = {
     id: number
     monto: number
     descripcion: string
-    tipo: "ingreso" | "gasto"
+    tipo: "Ingreso" | "Gasto"
+    fecha: string
 }

@@ -11,19 +11,22 @@ function App() {
       id: 1,
       monto: 800,
       descripcion: "Transferencia",
-      tipo: "ingreso",
+      tipo: "Ingreso",
+      fecha: "2026-10-12",
     },
     {
       id: 2,
       monto: 500,
       descripcion: "Comida",
-      tipo: "gasto",
+      tipo: "Gasto",
+      fecha: "2026-10-12",
     },
     {
       id: 3,
       monto: 80,
       descripcion: "Transporte",
-      tipo: "gasto",
+      tipo: "Gasto",
+      fecha: "2026-10-12"
     },
   ]);
 
@@ -33,11 +36,11 @@ function App() {
   }
   // filtra  y suma los montos de gastos e ingresos
   const gastos = movimientos
-    .filter((mov) => mov.tipo === "gasto")
+    .filter((mov) => mov.tipo === "Gasto")
     .reduce((acumulador, gasto) => acumulador + gasto.monto, 0);
 
   const ingresos = movimientos
-    .filter((mov) => mov.tipo === "ingreso")
+    .filter((mov) => mov.tipo === "Ingreso")
     .reduce((acumulador, ingreso) => acumulador + ingreso.monto, 0);
 
   // Funcion para eliminar movimientos registrados
@@ -93,6 +96,7 @@ function App() {
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
               tipo={movimiento.tipo}
+              fecha={movimiento.fecha}
               onDelete={deleteRegister}
               onEdit={editRegister}
             />

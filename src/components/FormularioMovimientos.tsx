@@ -8,13 +8,14 @@ function Formulario({
 }) {
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
-  const [tipo, setTipo] = useState<"ingreso" | "gasto">("ingreso");
+  const [tipo, setTipo] = useState<"Ingreso" | "Gasto">("Ingreso");
+  const [fecha, setFecha] = useState("");
   const [error, setError] = useState("");
 
   const manejarEnvio = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
 
-      // Validaciones para todos los tipos de datos 
+      // Validaciones para todos los tipos de datos
 
       const montoNumerico = parseFloat(monto)
       const cadenaLimpia = descripcion.trim()
@@ -23,7 +24,7 @@ function Formulario({
         setError("No ingreso la descripcion")
         return
       }
-      
+
       if (isNaN(montoNumerico)  || montoNumerico <= 0  ){
         setError("EL monto debe ser un numero mayor que 0")
         return
@@ -33,7 +34,8 @@ function Formulario({
       id: Date.now(),
       descripcion: cadenaLimpia,
       monto: montoNumerico,
-      tipo,      
+      tipo,
+      fecha
     };
 
 
@@ -43,6 +45,7 @@ function Formulario({
     // Limpia los inputs
     setDescripcion("");
     setMonto("");
+    setFecha("")
     setError("")
   };
 
@@ -60,15 +63,17 @@ function Formulario({
         value={monto}
         onChange={(evento) => setMonto(evento.target.value)}
       />
+      <input type="date" value={fecha} onChange={(evento) => setFecha(evento.target.value)} required ></input>
       <label>Tipo:</label>
       <select
         value={tipo}
         onChange={(evento) =>
-          setTipo(evento.target.value as "ingreso" | "gasto")
+          setTipo(evento.target.value as "Ingreso" | "Gasto")
         }
+        required
       >
-        <option value="ingreso">Ingreso</option>
-        <option value="gasto">Gasto</option>
+        <option value="Ingreso">Ingreso</option>
+        <option value="Gasto">Gasto</option>
       </select>
       <button type="submit">Agregar</button>
     </form>
