@@ -5,4 +5,5 @@ export type Movimiento = {
     descripcion: string
     tipo: "Ingreso" | "Gasto"
     fecha: string
+    categoria: string
 }

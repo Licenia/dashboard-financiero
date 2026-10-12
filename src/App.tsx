@@ -13,6 +13,7 @@ function App() {
       descripcion: "Transferencia",
       tipo: "Ingreso",
       fecha: "2026-10-12",
+      categoria: "Otro"
     },
     {
       id: 2,
@@ -20,13 +21,15 @@ function App() {
       descripcion: "Comida",
       tipo: "Gasto",
       fecha: "2026-10-12",
+      categoria:"Alimentacion"
     },
     {
       id: 3,
       monto: 80,
       descripcion: "Transporte",
       tipo: "Gasto",
-      fecha: "2026-10-12"
+      fecha: "2026-10-12",
+      categoria:"Transporte"
     },
   ]);
 
@@ -95,6 +98,7 @@ function App() {
               id={movimiento.id}
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
+              categoria={movimiento.categoria}
               tipo={movimiento.tipo}
               fecha={movimiento.fecha}
               onDelete={deleteRegister}

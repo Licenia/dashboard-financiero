@@ -9,6 +9,7 @@ function Formulario({
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [tipo, setTipo] = useState<"Ingreso" | "Gasto">("Ingreso");
+  const [categoria, setCategoria] = useState("");
   const [fecha, setFecha] = useState("");
   const [error, setError] = useState("");
 
@@ -35,7 +36,8 @@ function Formulario({
       descripcion: cadenaLimpia,
       monto: montoNumerico,
       tipo,
-      fecha
+      fecha,
+      categoria
     };
 
 
@@ -46,6 +48,7 @@ function Formulario({
     setDescripcion("");
     setMonto("");
     setFecha("")
+    setCategoria("")
     setError("")
   };
 
@@ -64,6 +67,22 @@ function Formulario({
         onChange={(evento) => setMonto(evento.target.value)}
       />
       <input type="date" value={fecha} onChange={(evento) => setFecha(evento.target.value)} required ></input>
+      <label>Categoria:</label>
+      <select
+        value={categoria}
+        onChange={(evento) =>
+          setCategoria(evento.target.value)
+        }
+        required
+      >
+        <option value="Alimentacion">Alimentacion</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Vivienda">Vivienda</option>
+        <option value="Salud">Salud</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Educacion">Educacion</option>
+        <option value="Otro">Otro</option>
+      </select>
       <label>Tipo:</label>
       <select
         value={tipo}
