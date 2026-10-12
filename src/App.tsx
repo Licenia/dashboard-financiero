@@ -1,12 +1,10 @@
-import Movimientos, { type MovimientosProps } from "./components/Movimientos";
+import Movimientos from "./components/Movimientos";
 import Resumen from "./components/Resumen";
 import Formulario from "./components/FormularioMovimientos";
 import { useState } from "react";
 import type { Movimiento } from "./types/movimientos";
 
 function App() {
-  const [editedId, setEditedId] = useState<number | null > (null)
-  const [editedData, setEditedData] = useState<Movimiento | null > (null)
   // estado inicial de movimientos
   const [movimientos, setMovimientos] = useState<Movimiento[]>([
     {
@@ -60,19 +58,6 @@ function App() {
     setMovimientos(editMov);
   };
 
-  // funcion para editar los movimientos
-  const editRegister = (id: number) => { setEditedId(id) }
-
-  const cancelEdit = () => { setEditedId(null) }
-
-  const handleChange = (campo: string, valor: string | number) => {
-    if (editedData) {
-      setEditedData({...editedData, [campo]: valor })
-    }
-  }
-  const updateRegister = () => {}
-
-
   return (
     <>
       <nav className="nav-options">
@@ -108,11 +93,6 @@ function App() {
               monto={movimiento.monto}
               descripcion={movimiento.descripcion}
               tipo={movimiento.tipo}
-<<<<<<< HEAD
-              onEdit={editRegister}
-              onCancel={cancelEdit}
-=======
->>>>>>> aa0e7495dad19219f10c93c14f5b489b46673aa4
               onDelete={deleteRegister}
               onEdit={editRegister}
             />
