@@ -12,7 +12,6 @@ export type MovimientosProps = {
   onEdit: (id: number, nuevosDatos: Omit<Movimiento, "id">) => void;
 };
 
-
 function formatearFecha(fecha: string): string {
   if (!fecha) return "";
 
@@ -28,6 +27,25 @@ function Movimientos(props: MovimientosProps) {
   const [tipoEditar, setTipoEditar] = useState(props.tipo);
   const [fechaEditar, setFechaEditar] = useState(props.fecha);
   const [categoriaEditar, setCategoriaEditar] = useState(props.categoria);
+  const [error, setError] = useState("")
+
+  function validaciones(){
+    setError("")
+  const montoNumerico = Number(montoEditar)
+  const cadenaLimpia = descripcionEditar.trim()
+
+  if(cadenaLimpia === ""){
+    setError("No ingreso la descripcion")
+    return false
+  }
+
+  if (isNaN(montoNumerico) || montoNumerico <= 0) {
+    setError("El monto deber ser mayor que 0")
+    return false
+  }
+
+  return true;
+}
   return (
     <div>
       <ul className="list">
@@ -79,8 +97,16 @@ function Movimientos(props: MovimientosProps) {
                 <option value="Gasto">Gasto</option>
               </select>
               <input type="date" value={fechaEditar} onChange={(e)=> setFechaEditar(e.target.value)}/>
+              {error && <p style={{ color: "red" }}>{error}</p>}
               <button
                 onClick={() => {
+
+                  const resultado = validaciones();
+
+                  if (!resultado) {
+                    return
+                  }
+
                   props.onEdit(props.id, {
                     descripcion: descripcionEditar,
                     monto: montoEditar,
