@@ -51,14 +51,21 @@ function Movimientos(props: MovimientosProps) {
       <ul className="list">
         <li>
           {props.monto} {props.descripcion} {props.categoria} {props.tipo} {formatearFecha(props.fecha)}
+          <button type="button" aria-label="Boton de eliminar" onClick={() => {
+            const result = confirm("¿Estas seguro de que deseas eliminar este movimiento?")
+            if (result) {
+            props.onDelete(props.id)
+            }
+          }
+          }>
           <img
             className="btn-delete"
             width="20"
             height="20"
             src="https://img.icons8.com/ios/50/delete--v1.png"
             alt="delete--v1"
-            onClick={() => props.onDelete(props.id)}
           />
+          </button>
           <button onClick={() => setEditando(true)}>Editar</button>
           {editando ? (
             <div>
