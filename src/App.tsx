@@ -64,6 +64,21 @@ function App() {
     setMovimientos(editMov);
   };
 
+  const [filtro, setFiltro] = useState("todos")
+  // Funcion para filtrar por tipo de gasto
+  const listaFiltrada = filtrarTipo(filtro)
+  function filtrarTipo(tipo) {
+
+    if (tipo === "Gasto") {
+   return movimientos.filter((mov) => mov.tipo === "Gasto")
+    } else if (tipo === "Ingreso") {
+     return movimientos.filter((mov) => mov.tipo === "Ingreso")
+    } else {
+      return movimientos
+    }
+  }
+
+
   return (
     <>
       <nav className="nav-options">
@@ -91,8 +106,15 @@ function App() {
             ingresos={ingresos}
             gastos={gastos}
           />
+
           <h2> Ultimos movimientos</h2>
-          {movimientos.map((movimiento) => (
+          <label>Filtrar por: </label>
+          <select id="filtroEtiqueta" value={filtro} onChange={(e)=> setFiltro(e.target.value)}>
+            <option value="todos">Mostrar todos</option>
+            <option value="Ingreso">Ingreso</option>
+            <option value="Gasto">Gasto</option>
+          </select>
+          {listaFiltrada.map((movimiento) => (
             <Movimientos
               key={movimiento.id}
               id={movimiento.id}
