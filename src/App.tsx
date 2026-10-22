@@ -64,18 +64,21 @@ function App() {
     setMovimientos(editMov);
   };
 
+  const [filtroCategoria, setFiltroCategoria] = useState("todos")
   const [filtro, setFiltro] = useState("todos")
-  // Funcion para filtrar por tipo de gasto
-  const listaFiltrada = filtrarTipo(filtro)
-  function filtrarTipo(tipo) {
 
-    if (tipo === "Gasto") {
-   return movimientos.filter((mov) => mov.tipo === "Gasto")
-    } else if (tipo === "Ingreso") {
-     return movimientos.filter((mov) => mov.tipo === "Ingreso")
-    } else {
-      return movimientos
-    }
+  const listaCategorias = Array.from(
+    new Set(
+      movimientos.map((mov)=> mov.categoria)
+    )
+  )
+
+
+  // Funcion para filtrar por tipo de gasto
+  const listaFiltrada = filtrarTipo(filtro, filtroCategoria)
+  function filtrarTipo(tipo, categoria) {
+  return movimientos.filter((mov) => (tipo === "todos" || mov.tipo === tipo)
+    && (categoria === "todas" || mov.categoria === categoria))
   }
 
 
@@ -108,13 +111,25 @@ function App() {
           />
 
           <h2> Ultimos movimientos</h2>
-          <label>Filtrar por: </label>
+          <label>Filtrar por categoria: </label>
+          <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+            <option value="todas">Todas las categorias</option>
+            {listaCategorias.map((categoria) => (
+              <option value={categoria}>{categoria}</option>
+            ))
+            }
+            </select>
+          <label>Filtrar por tipo: </label>
           <select id="filtroEtiqueta" value={filtro} onChange={(e)=> setFiltro(e.target.value)}>
             <option value="todos">Mostrar todos</option>
             <option value="Ingreso">Ingreso</option>
             <option value="Gasto">Gasto</option>
           </select>
-          {listaFiltrada.map((movimiento) => (
+          {
+            listaFiltrada.length === 0 ?
+              <p>No hay coincidencias </p>
+              :
+            listaFiltrada.map((movimiento) => (
             <Movimientos
               key={movimiento.id}
               id={movimiento.id}
