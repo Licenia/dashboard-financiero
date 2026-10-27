@@ -1,37 +1,55 @@
 import Movimientos from "./components/Movimientos";
 import Resumen from "./components/Resumen";
 import Formulario from "./components/FormularioMovimientos";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Movimiento } from "./types/movimientos";
 
 function App() {
+  const movimientosFijos = [{
+    id: 1,
+    monto: 800,
+    descripcion: "Transferencia",
+    tipo: "Ingreso",
+    fecha: "2026-10-12",
+    categoria: "Otro"
+  },
+  {
+    id: 2,
+    monto: 500,
+    descripcion: "Comida",
+    tipo: "Gasto",
+    fecha: "2026-10-12",
+    categoria: "Alimentacion"
+  },
+  {
+    id: 3,
+    monto: 80,
+    descripcion: "Transporte",
+    tipo: "Gasto",
+    fecha: "2026-10-12",
+    categoria: "Transporte"
+  }
+  ]
   // estado inicial de movimientos
-  const [movimientos, setMovimientos] = useState<Movimiento[]>([
-    {
-      id: 1,
-      monto: 800,
-      descripcion: "Transferencia",
-      tipo: "Ingreso",
-      fecha: "2026-10-12",
-      categoria: "Otro"
-    },
-    {
-      id: 2,
-      monto: 500,
-      descripcion: "Comida",
-      tipo: "Gasto",
-      fecha: "2026-10-12",
-      categoria:"Alimentacion"
-    },
-    {
-      id: 3,
-      monto: 80,
-      descripcion: "Transporte",
-      tipo: "Gasto",
-      fecha: "2026-10-12",
-      categoria:"Transporte"
-    },
-  ]);
+  const [movimientos, setMovimientos] = useState<Movimiento[]>(datosGuardados);
+
+  useEffect(() => {
+    const movimientosPersistentes = JSON.stringify(movimientos)
+                  localStorage.setItem("movimientos", movimientosPersistentes)
+  }, [movimientos])
+
+  function datosGuardados() {
+    try {
+      const datos = localStorage.getItem("movimientos")
+      if (datos) {
+        return JSON.parse(datos)
+      } else {
+        return movimientosFijos
+      }
+    } catch{
+       return movimientosFijos
+    }
+  }
 
   // agrega un nuevo movimiento al estado
   function agregarMovimiento(movimiento: Movimiento) {
@@ -78,7 +96,7 @@ function App() {
   const listaFiltrada = filtrarTipo(filtro, filtroCategoria)
   function filtrarTipo(tipo, categoria) {
   return movimientos.filter((mov) => (tipo === "todos" || mov.tipo === tipo)
-    && (categoria === "todas" || mov.categoria === categoria))
+    && (categoria === "todos" || mov.categoria === categoria))
   }
 
 
@@ -113,7 +131,7 @@ function App() {
           <h2> Ultimos movimientos</h2>
           <label>Filtrar por categoria: </label>
           <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
-            <option value="todas">Todas las categorias</option>
+            <option value="todos">Todas las categorias</option>
             {listaCategorias.map((categoria) => (
               <option value={categoria}>{categoria}</option>
             ))
