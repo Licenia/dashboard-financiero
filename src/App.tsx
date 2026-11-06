@@ -4,6 +4,7 @@ import Formulario from "./components/FormularioMovimientos";
 import { useEffect, useState } from "react";
 import type { Movimiento } from "./types/movimientos";
 
+type TipoFiltro = "todos" | Movimiento["tipo"];
 function App() {
   const movimientosFijos = [{
     id: 1,
@@ -83,7 +84,7 @@ function App() {
   };
 
   const [filtroCategoria, setFiltroCategoria] = useState("todos")
-  const [filtro, setFiltro] = useState("todos")
+  const [filtro, setFiltro] = useState<TipoFiltro>("todos")
 
   const listaCategorias = Array.from(
     new Set(
@@ -94,7 +95,7 @@ function App() {
 
   // Funcion para filtrar por tipo de gasto
   const listaFiltrada = filtrarTipo(filtro, filtroCategoria)
-  function filtrarTipo(tipo, categoria) {
+  function filtrarTipo(tipo: TipoFiltro, categoria:string) {
   return movimientos.filter((mov) => (tipo === "todos" || mov.tipo === tipo)
     && (categoria === "todos" || mov.categoria === categoria))
   }
@@ -138,7 +139,7 @@ function App() {
             }
             </select>
           <label>Filtrar por tipo: </label>
-          <select id="filtroEtiqueta" value={filtro} onChange={(e)=> setFiltro(e.target.value)}>
+          <select id="filtroEtiqueta" value={filtro} onChange={(e)=> setFiltro(e.target.value as TipoFiltro)}>
             <option value="todos">Mostrar todos</option>
             <option value="Ingreso">Ingreso</option>
             <option value="Gasto">Gasto</option>
