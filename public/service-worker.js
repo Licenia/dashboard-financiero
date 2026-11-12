@@ -21,7 +21,7 @@ self.addEventListener("fetch", (event) => {
   console.log("Solicitud:", event.request.url);
 
   event.respondWith(
-    caches.match(event.request)
+    caches.match(event.request, {ignoreVary: true})
       .then((respuestaCache) => {
         console.log(
           "¿Encontrado en caché?",
