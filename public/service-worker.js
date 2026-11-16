@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "fp-by-licenia-v1";
+const CACHE_NAME = "fp-by-licenia-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -16,6 +16,23 @@ self.addEventListener("install", (event) => {
       })
   );
 });
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+  caches.keys().then((nombres) => {
+    const cachesAntiguas = nombres.filter((elemento) => {
+      return elemento.startsWith("fp-by-licenia-") && elemento !== CACHE_NAME
+    })
+
+    return Promise.all(
+      cachesAntiguas.map((nombre) => {
+       return caches.delete(nombre)
+
+    })
+    )
+  })
+  )
+})
 
 self.addEventListener("fetch", (event) => {
   console.log("Solicitud:", event.request.url);

@@ -8,93 +8,123 @@ function Formulario({
 }) {
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
-  const [tipo, setTipo] = useState<"Ingreso" | "Gasto">("Ingreso");
-  const [categoria, setCategoria] = useState("");
+  const [tipo, setTipo] = useState<"Ingreso" | "Gasto">("Gasto");
+  const [categoria, setCategoria] = useState("Alimentacion");
   const [fecha, setFecha] = useState("");
   const [error, setError] = useState("");
 
   const manejarEnvio = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
+    const montoNumerico = parseFloat(monto);
+    const cadenaLimpia = descripcion.trim();
 
-      // Validaciones para todos los tipos de datos
+    if (cadenaLimpia === "") {
+      setError("Ingresa una descripción");
+      return;
+    }
+    if (isNaN(montoNumerico) || montoNumerico <= 0) {
+      setError("El monto debe ser mayor que 0");
+      return;
+    }
 
-      const montoNumerico = parseFloat(monto)
-      const cadenaLimpia = descripcion.trim()
-
-      if (cadenaLimpia === ""){
-        setError("No ingreso la descripcion")
-        return
-      }
-
-      if (isNaN(montoNumerico)  || montoNumerico <= 0  ){
-        setError("EL monto debe ser un numero mayor que 0")
-        return
-      }
-
-    const obj = {
+    agregarMovimiento({
       id: Date.now(),
       descripcion: cadenaLimpia,
       monto: montoNumerico,
       tipo,
       fecha,
-      categoria
-    };
+      categoria,
+    });
 
-
-    // Se envía el objeto con los datos del formulario al componente padre
-    agregarMovimiento(obj);
-
-    // Limpia los inputs
     setDescripcion("");
     setMonto("");
-    setFecha("")
-    setCategoria("")
-    setError("")
+    setFecha("");
+    setCategoria("Alimentacion");
+    setError("");
   };
 
+  const inputCls =
+    "w-full rounded-xl border border-outline/50 bg-surface-alt px-3 py-2 text-foreground outline-none transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline";
+
   return (
-    <form onSubmit={manejarEnvio}>
-      <h2>Nuevo Movimientos</h2>
-      { error !== "" && ( <p>{error}</p>) }
-      <label>Descripcion </label>
-      <input
-        value={descripcion}
-        onChange={(evento) => setDescripcion(evento.target.value)}
-      />
-      <label>Monto </label>
-      <input
-        value={monto}
-        onChange={(evento) => setMonto(evento.target.value)}
-      />
-      <input type="date" value={fecha} onChange={(evento) => setFecha(evento.target.value)} required ></input>
-      <label>Categoria:</label>
-      <select
-        value={categoria}
-        onChange={(evento) =>
-          setCategoria(evento.target.value)
-        }
-        required
+    <form onSubmit={manejarEnvio} className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-xl font-bold text-foreground">Nuevo movimiento</h2>
+        <div className="inline-flex rounded-pill bg-surface-alt p-1">
+          {(["Gasto", "Ingreso"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTipo(t)}
+              className={`rounded-pill px-4 py-1.5 text-sm font-semibold transition ${
+                tipo === t
+                  ? t === "Ingreso"
+                    ? "bg-income-soft text-income"
+                    : "bg-expense-soft text-expense"
+                  : "text-muted hover:text-foreground"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {error && (
+        <p className="rounded-xl bg-expense-soft px-3 py-2 text-sm font-medium text-expense">{error}</p>
+      )}
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label className="flex flex-col gap-1 text-sm font-medium text-muted">
+          Descripción
+          <input
+            className={inputCls}
+            placeholder="Ej. Supermercado"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-sm font-medium text-muted">
+          Monto
+          <input
+            className={inputCls}
+            type="number"
+            step="0.01"
+            placeholder="0.00"
+            value={monto}
+            onChange={(e) => setMonto(e.target.value)}
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-sm font-medium text-muted">
+          Fecha
+          <input
+            className={inputCls}
+            type="date"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+            required
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-sm font-medium text-muted">
+          Categoría
+          <select className={inputCls} value={categoria} onChange={(e) => setCategoria(e.target.value)} required>
+            <option value="Alimentacion">Alimentación</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Vivienda">Vivienda</option>
+            <option value="Salud">Salud</option>
+            <option value="Entretenimiento">Entretenimiento</option>
+            <option value="Educacion">Educación</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full rounded-pill bg-primary px-5 py-2.5 font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/30 active:scale-[0.98] sm:w-auto"
       >
-        <option value="Alimentacion">Alimentacion</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Vivienda">Vivienda</option>
-        <option value="Salud">Salud</option>
-        <option value="Entretenimiento">Entretenimiento</option>
-        <option value="Educacion">Educacion</option>
-        <option value="Otro">Otro</option>
-      </select>
-      <label>Tipo:</label>
-      <select
-        value={tipo}
-        onChange={(evento) =>
-          setTipo(evento.target.value as "Ingreso" | "Gasto")
-        }
-        required
-      >
-        <option value="Ingreso">Ingreso</option>
-        <option value="Gasto">Gasto</option>
-      </select>
-      <button type="submit">Agregar</button>
+        Agregar movimiento
+      </button>
     </form>
   );
 }

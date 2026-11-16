@@ -1,37 +1,35 @@
+@import "tailwindcss";
 
-.nav-options{
-    display: flex;
-    justify-content: space-between;
+@theme {
+  --font-display: "Quicksand", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  --color-background: #fff7f9;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fff0f7;
+  --color-surface-container: #fae9f1;
+  --color-foreground: #22191f;
+  --color-muted: #574147;
+  --color-primary: #a9275e;
+  --color-primary-soft: #ffe4ec;
+  --color-secondary: #754f8f;
+  --color-secondary-soft: #f0e6fa;
+  --color-income: #176948;
+  --color-income-soft: #e8f5e9;
+  --color-expense: #ba1a1a;
+  --color-expense-soft: #ffe4ec;
+  --color-outline: #ddbfc6;
+
+  --radius-card: 2rem;
+  --radius-pill: 9999px;
 }
 
-nav ul {
-    display: flex;
-    gap: 1.3rem;
-    padding: 1rem;
-}
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
 
-.list{
-    list-style: none;
-}
-
-.list li {
-    padding: 1rem;
-}
-
-.container {
-    display: flex;
-    gap: 4rem;
-}
-
-.tarjeta-resumen{
-    display: flex;
-    justify-content: space-between;
-    gap: 2.5rem;
-    align-items: center;
-    border: 1px solid black;
-    padding: 1rem;
-}
-
-.tarjeta-resumen > div {
-    flex: 1;
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
 }

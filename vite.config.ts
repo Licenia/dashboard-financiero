@@ -1,9 +1,10 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), precachePlugin()],
+  plugins: [react(),tailwindcss(), precachePlugin()],
 })
 
 function precachePlugin(): Plugin {
